@@ -29,5 +29,6 @@ Build a modular Roblox Studio project with selectable operating-system and conso
 12. The owner's corrected XP scope excludes OS installation. Prioritize faithful XP logon, accounts, desktop, settings, original visual assets, and sounds. Do not substitute a modern redesign. Read `docs/XP-COVERAGE.md` before extending XP and do not describe partial UI coverage as 100% Windows compatibility.
 13. XP assets are local: `assets/xp` is copied beside the release and into the installed Studio version's `content/omnishell/xp` directory by `scripts/sync-xp-assets.ps1`. Do not overwrite built-in Roblox content. Fonts come from the owner's installed Windows and must remain local; never commit font binaries.
 14. `python tests/check.py` runs compilation and simulated-service logic checks. If `work/roblox-api.json` is present it validates property names against that API dump. These checks do not prove rendering fidelity or audio playback in Studio.
+15. The owner explicitly requires the standard Roblox cursor. Do not replace, hide, redraw, shadow, or add trails to it. Custom XP cursor code and assets have been removed.
 
 The owner's task instructions take precedence over these repository conventions.

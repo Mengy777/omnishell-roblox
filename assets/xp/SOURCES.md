@@ -10,12 +10,12 @@
 
 Дополнительно:
 
-- Полный набор обоев Desktop и 35 WAV-файлов из [bartekl1/windows-ui-assets](https://github.com/bartekl1/windows-ui-assets), разделы `Wallpapers/Windows XP/Desktop` и `Sounds/Windows XP`. Указатель `Cursors/Windows XP/arrow_r.cur` преобразован в PNG для показа в GUI.
+- Полный набор обоев Desktop и 35 WAV-файлов из [bartekl1/windows-ui-assets](https://github.com/bartekl1/windows-ui-assets), разделы `Wallpapers/Windows XP/Desktop` и `Sounds/Windows XP`.
 - Растровые части Luna Blue/Olive/Silver, 25 изображений пользователей, логотип и монитор предпросмотра: [aduncandev/web-xp](https://github.com/aduncandev/web-xp), проверенный commit `bc9528db08c3714e6dfd52be43e1dcb3fe4a216a`, папки `src/assets/xp/luna`, `src/assets/userIcons`, `src/assets/windowsIcons` и `src/assets/xp`. Лицензия проекта сохранена в `WEB-XP-LICENSE.txt`. BMP-профили преобразованы в PNG без изменения изображения; для серебристой схемы `Framecaption-*` сохранены под унифицированным именем `FrameCaption-*`.
 - Корзина, учетные записи, переключение пользователя и значок экрана: [holylance98/WinXpIcons](https://github.com/holylance98/WinXpIcons).
 - Для сравнения геометрии просмотрен референсный снимок `refkit/vm/luna-dp-desktop.png` из web-xp. Полный визуальный прогон текущей сборки не выполнен.
 - Lucida Console также копируется только из локальной Windows; TTF в Git не добавляются.
 - `start.wav` в коллекции использует ADPCM. Для совместимости рабочая копия декодирована FFmpeg в PCM WAV без изменения содержания; исходный файл сохранён в `sounds-original/start.wav`.
-- `scripts/convert-xp-cursor.py` восстанавливает прозрачность монохромного `arrow.cur` по исходной AND-маске. Рабочий файл `arrow-rgba.png` имеет RGBA; простое открытие CUR через Pillow теряло маску и давало чёрный квадрат.
+- Пользователь потребовал оставить только стандартный курсор Roblox. Ранее добавленные CUR/PNG курсора XP и конвертер удалены; дополнительный указатель не отображается.
 
 После обновления Roblox Studio нужно повторить `scripts/sync-xp-assets.ps1` или обычную сборку, чтобы добавить ресурсы в новую папку версии. Для переноса сборки на другой компьютер нужны папка `assets` и повторная синхронизация ресурсов.

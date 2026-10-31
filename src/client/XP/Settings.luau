@@ -155,10 +155,9 @@ function Settings:mouse()
 			T.choice(group,{0.2,0.3,0.45,0.6,0.8},draft.doubleClick,18,65,350,function(value) draft.doubleClick=value end)
 		elseif name=="Указатели" then
 			T.text(page,"Схема:",18,22,390,20)
-			T.choice(page,{"Стандартная Windows"},"Стандартная Windows",18,50,390)
-			T.checkbox(page,"Включить тень указателя",draft.pointerShadow,18,122,390,function(value) draft.pointerShadow=value end)
+			T.text(page,"Стандартный курсор Roblox",18,50,390,24)
 		elseif name=="Параметры указателя" then
-			T.checkbox(page,"Отображать след указателя мыши",draft.mouseTrails,18,45,390,function(value) draft.mouseTrails=value end)
+			T.text(page,"Используется стандартный курсор Roblox.",18,45,390,45)
 		else
 			T.text(page,"Прокрутка выполняется колесом мыши в окнах с полосой прокрутки.",18,35,390,70)
 		end

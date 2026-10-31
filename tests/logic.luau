@@ -137,6 +137,13 @@ local nav=root.Navigation.Categories
 local cards=root.Content.Page.Cards
 cards:WaitForChild("windows-xp").Activated:Fire()
 assert(session and session.welcomeFrame and not root.Visible,"XP welcome replaces launcher")
+assert(input.MouseIconEnabled==true,"Standard Roblox cursor must remain enabled")
+input.InputChanged:Fire({UserInputType=env.Enum.UserInputType.MouseMovement})
+for _,object in session.root:GetDescendants() do
+	assert(object.Name~="Pointer" and object.Name~="PointerShadow","No XP cursor overlays")
+	if object:IsA("ImageLabel") then assert(not string.find(object.Image,"cursors/",1,true),"No replacement cursor images") end
+end
+print("PASS: standard Roblox cursor enabled; no replacement, shadow or trail overlays")
 session.welcomeFrame.Center.Profiles:WaitForChild("Profile:"..owner.id).Activated:Fire()
 assert(State.current==owner and session.desktop.Visible and not session.welcomeFrame,"Profile login")
 local recycle=session.icons:WaitForChild("Desktop:Корзина")

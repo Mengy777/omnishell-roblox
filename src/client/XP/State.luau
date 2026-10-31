@@ -6,7 +6,7 @@ export type Preferences = {
 	lockTaskbar: boolean, autoHide: boolean, groupTasks: boolean, classicStart: boolean,
 	volume: number, muted: boolean, doubleClick: number, screenSaver: string,
 	saverMinutes: number, resolution: string, colorDepth: string, timeOffset: number,
-	language: string, dateFormat: string, mouseTrails: boolean, pointerShadow: boolean,
+	language: string, dateFormat: string,
 	showComputer: boolean, showDocuments: boolean, showNetwork: boolean,
 }
 export type Profile = { id: number, name: string, avatar: string, guest: boolean, preferences: Preferences, files: { [string]: string } }
@@ -23,7 +23,7 @@ local function defaults(): Preferences
 		lockTaskbar = true, autoHide = false, groupTasks = true, classicStart = false,
 		volume = 70, muted = false, doubleClick = 0.45, screenSaver = "None",
 		saverMinutes = 10, resolution = "1024 × 768", colorDepth = "32 бита", timeOffset = State.utcOffset,
-		language = "Русский", dateFormat = "dd.MM.yyyy", mouseTrails = false, pointerShadow = true,
+		language = "Русский", dateFormat = "dd.MM.yyyy",
 		showComputer = false, showDocuments = false, showNetwork = false,
 	}
 end

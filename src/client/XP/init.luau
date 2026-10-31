@@ -30,16 +30,7 @@ function XP.mount(gui,onExit)
 	local uiScale=Instance.new("UIScale")
 	uiScale.Parent=canvas
 	self.root=physical self.canvas=canvas
-	local originalMouseIcon=UIS.MouseIconEnabled
-	UIS.MouseIconEnabled=false
-	local pointerShadow=T.image(physical,"arrow-rgba.png",1,1,32,32,"cursors/")
-	pointerShadow.Name="PointerShadow" pointerShadow.ZIndex=5000 pointerShadow.ImageColor3=Color3.new(0,0,0) pointerShadow.ImageTransparency=0.55
-	local pointer=T.image(physical,"arrow-rgba.png",0,0,32,32,"cursors/")
-	pointer.Name="Pointer" pointer.ZIndex=5001
-	local initialPointer=UIS:GetMouseLocation()
-	pointer.Position=UDim2.fromOffset(initialPointer.X-physical.AbsolutePosition.X,initialPointer.Y-physical.AbsolutePosition.Y)
-	pointerShadow.Position=UDim2.fromOffset(initialPointer.X-physical.AbsolutePosition.X+1,initialPointer.Y-physical.AbsolutePosition.Y+1)
-	local pointerHistory={}
+	UIS.MouseIconEnabled=true
 	local desktop=T.frame(canvas,"Desktop",Color3.fromRGB(0,78,152),0,0,1024,768)
 	desktop.Size=UDim2.fromScale(1,1)
 	desktop.Active=true
@@ -159,7 +150,6 @@ function XP.mount(gui,onExit)
 		wallpaper.ScaleType=if prefs.wallpaperMode=="Tile" then Enum.ScaleType.Tile elseif prefs.wallpaperMode=="Center" then Enum.ScaleType.Fit else Enum.ScaleType.Stretch
 		wallpaper.TileSize=UDim2.fromOffset(800,600)
 		icons.Visible=prefs.showIcons
-		pointerShadow.Visible=prefs.pointerShadow
 		clock.Visible=prefs.showClock
 		quick.Visible=prefs.quickLaunch
 		tasks.Position=UDim2.fromOffset(if prefs.quickLaunch then 168 else 110,0)
@@ -401,17 +391,6 @@ function XP.mount(gui,onExit)
 		if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
 			self.lastInput=os.clock()
 			if self.screen then self.screen:Destroy() self.screen=nil end
-			local point=UIS:GetMouseLocation()
-			local x,y=point.X-physical.AbsolutePosition.X,point.Y-physical.AbsolutePosition.Y
-			pointer.Position=UDim2.fromOffset(x,y)
-			pointerShadow.Position=UDim2.fromOffset(x+1,y+1)
-			if State.current and State.current.preferences.mouseTrails then
-				local trail=T.image(physical,"arrow-rgba.png",x,y,32,32,"cursors/")
-				trail.ZIndex=4999 trail.ImageTransparency=0.65
-				table.insert(pointerHistory,trail)
-				if #pointerHistory>6 then table.remove(pointerHistory,1):Destroy() end
-				Debris:AddItem(trail,0.2)
-			end
 		end
 	end))
 	local elapsed=0
@@ -431,7 +410,6 @@ function XP.mount(gui,onExit)
 	function self:destroy()
 		if not self.alive then return end
 		self.alive=false
-		UIS.MouseIconEnabled=originalMouseIcon
 		for _,connection in self.connections do connection:Disconnect() end
 		self.wm:destroy()
 		physical:Destroy()

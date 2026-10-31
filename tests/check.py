@@ -54,9 +54,6 @@ for theme in ('blue', 'olive', 'silver'):
 for font in ('Tahoma', 'Trebuchet', 'LucidaConsole'):
     json.loads((ROOT / f'assets/xp/fonts/{font}.json').read_text())
 print('PASS: theme assets and font definitions')
-cursor = (ROOT / 'assets/xp/cursors/arrow-rgba.png').read_bytes()
-assert cursor[:8] == b'\x89PNG\r\n\x1a\n' and cursor[25] == 6, 'Cursor must be RGBA, preserving its AND-mask transparency'
-print('PASS: cursor PNG has an alpha channel')
 state = (ROOT / mapping['State']).read_text(encoding='utf-8')
 for catalog, folder in (('avatars', 'users'), ('wallpapers', 'images')):
     literal = re.search(rf'State\.{catalog}\s*=\s*\{{([^}}]+)\}}', state).group(1)
