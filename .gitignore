@@ -1,0 +1,15 @@
+# Generated Roblox places and local settings
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+*.lock
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+build/
+work/
+.env
+.env.*
+!.env.example

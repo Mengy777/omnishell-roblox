@@ -1,0 +1,23 @@
+{
+  "name": "OmniShell",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "OmniShell": {
+        "$path": "src/shared"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "OmniShellClient": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "OmniShellServer": {
+        "$path": "src/server"
+      }
+    }
+  }
+}
