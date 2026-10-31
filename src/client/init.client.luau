@@ -9,6 +9,7 @@ local shared = ReplicatedStorage:WaitForChild("OmniShell")
 local catalog = require(shared:WaitForChild("Platforms"))
 local games = require(shared:WaitForChild("Games"))
 local UI = require(script:WaitForChild("UI"))
+local XP = require(script:WaitForChild("XP"))
 type Platform = catalog.Platform
 type Category = catalog.Category
 
@@ -184,7 +185,7 @@ local function addPlatform(platform: Platform, index: number)
 	local symbol = UI.text(icon, platform.symbol, 27, platform.accent)
 	symbol.Size = UDim2.fromScale(1, 1)
 	symbol.TextXAlignment = Enum.TextXAlignment.Center
-	local status = UI.text(button, "В ПЛАНЕ", 9, UI.colors.muted)
+	local status = UI.text(button, if platform.id == "windows-xp" then "ОТКРЫТЬ" else "В ПЛАНЕ", 9, UI.colors.muted)
 	status.Position = UDim2.new(1, -97, 0, 28)
 	status.Size = UDim2.fromOffset(80, 20)
 	status.TextXAlignment = Enum.TextXAlignment.Right
@@ -195,10 +196,16 @@ local function addPlatform(platform: Platform, index: number)
 	local caption = UI.text(button, platform.caption, 12, UI.colors.muted)
 	caption.Position = UDim2.fromOffset(18, 118)
 	caption.Size = UDim2.new(1, -36, 0, 28)
-	local open = UI.text(button, "Об оболочке  →", 12, platform.accent)
+	local open = UI.text(button, if platform.id == "windows-xp" then "Войти в Windows XP  →" else "Об оболочке  →", 12, platform.accent)
 	open.Position = UDim2.fromOffset(18, 156)
 	open.Size = UDim2.new(1, -36, 0, 20)
 	button.Activated:Connect(function()
+		if platform.id == "windows-xp" then
+			GuiService.SelectedObject = nil
+			root.Visible = false
+			XP.mount(gui, function() root.Visible = true end)
+			return
+		end
 		selectedPlatform = platform
 		page = "platform"
 		render()

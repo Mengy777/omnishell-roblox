@@ -26,5 +26,8 @@ Build a modular Roblox Studio project with selectable operating-system and conso
 9. Keep implementation simple; split platform-specific behavior into modules when it is actually introduced. Do not create empty systems or speculative abstractions.
 10. The owner works on this computer during development. Run builds and logic checks in the background. Do not activate Studio, switch desktops, or use the shared mouse/keyboard while the owner is working; arrange an isolated environment or an agreed time for visual checks.
 11. The owner requested a permanent build folder: `D:\Omni-Shell`. Use `scripts/build.ps1` for releases: it updates `D:\Omni-Shell\OmniShell.rbxlx` and keeps timestamped copies in `D:\Omni-Shell\builds`. Keep the stable filename and preserve old builds. Source code remains in this Git repository.
+12. The owner's corrected XP scope excludes OS installation. Prioritize faithful XP logon, accounts, desktop, settings, original visual assets, and sounds. Do not substitute a modern redesign. Read `docs/XP-COVERAGE.md` before extending XP and do not describe partial UI coverage as 100% Windows compatibility.
+13. XP assets are local: `assets/xp` is copied beside the release and into the installed Studio version's `content/omnishell/xp` directory by `scripts/sync-xp-assets.ps1`. Do not overwrite built-in Roblox content. Fonts come from the owner's installed Windows and must remain local; never commit font binaries.
+14. `python tests/check.py` runs compilation and simulated-service logic checks. If `work/roblox-api.json` is present it validates property names against that API dump. These checks do not prove rendering fidelity or audio playback in Studio.
 
 The owner's task instructions take precedence over these repository conventions.

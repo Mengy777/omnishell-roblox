@@ -29,6 +29,8 @@ try {
     [xml]$place = Get-Content -LiteralPath $temporaryBuild -Raw -Encoding UTF8
     if ($place.DocumentElement.Name -ne 'roblox') { throw 'Invalid Roblox place XML.' }
 
+    & (Join-Path $PSScriptRoot 'sync-xp-assets.ps1') -OutputDirectory $OutputDirectory
+
     $archiveDirectory = Join-Path $OutputDirectory 'builds'
     New-Item -ItemType Directory -Force -Path $archiveDirectory | Out-Null
     $buildStamp = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ')
