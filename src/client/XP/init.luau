@@ -5,6 +5,7 @@ local UIS=game:GetService("UserInputService")
 local RunService=game:GetService("RunService")
 local SoundService=game:GetService("SoundService")
 local Debris=game:GetService("Debris")
+local GuiService=game:GetService("GuiService")
 local T=require(script.Theme)
 local State=require(script.State)
 local WM=require(script.WindowManager)
@@ -31,9 +32,9 @@ function XP.mount(gui,onExit)
 	self.root=physical self.canvas=canvas
 	local originalMouseIcon=UIS.MouseIconEnabled
 	UIS.MouseIconEnabled=false
-	local pointerShadow=T.image(physical,"arrow.png",1,1,32,32,"cursors/")
+	local pointerShadow=T.image(physical,"arrow-rgba.png",1,1,32,32,"cursors/")
 	pointerShadow.Name="PointerShadow" pointerShadow.ZIndex=5000 pointerShadow.ImageColor3=Color3.new(0,0,0) pointerShadow.ImageTransparency=0.55
-	local pointer=T.image(physical,"arrow.png",0,0,32,32,"cursors/")
+	local pointer=T.image(physical,"arrow-rgba.png",0,0,32,32,"cursors/")
 	pointer.Name="Pointer" pointer.ZIndex=5001
 	local initialPointer=UIS:GetMouseLocation()
 	pointer.Position=UDim2.fromOffset(initialPointer.X-physical.AbsolutePosition.X,initialPointer.Y-physical.AbsolutePosition.Y)
@@ -128,6 +129,19 @@ function XP.mount(gui,onExit)
 	end
 	self.wm.onSound=function(file) self:play(file) end
 
+	function self:layoutIcons()
+		local scale=desktop:GetAttribute("UIScale") or 1
+		local inset=GuiService.TopbarInset
+		local safeTop=math.max(80,(inset and inset.Max.Y or 0)+16)/scale
+		local visibleIcon=0
+		for _,button in icons:GetChildren() do
+			if button:IsA("GuiButton") and button.Visible then
+				button.Position=UDim2.fromOffset(8,safeTop+visibleIcon*91)
+				visibleIcon+=1
+			end
+		end
+	end
+
 	function self:applyPreferences()
 		if not State.current then return end
 		local prefs=State.current.preferences
@@ -154,11 +168,9 @@ function XP.mount(gui,onExit)
 		local tint=if prefs.theme=="Olive" then Color3.fromRGB(202,217,144) elseif prefs.theme=="Silver" then Color3.fromRGB(225,224,239) else Color3.new(1,1,1)
 		taskbar.BackgroundColor3=tint
 		for _,window in self.wm.windows do window.frame.BackgroundColor3=T.blue window.title.BackgroundColor3=tint end
-		local visibleIcon=0
 		for _,button in icons:GetChildren() do
 			local preference=button:GetAttribute("VisibilityPreference")
 			if preference then button.Visible=prefs[preference] end
-			if button:IsA("GuiButton") and button.Visible then button.Position=UDim2.fromOffset(8,12+visibleIcon*91) visibleIcon+=1 end
 			local text=button:FindFirstChild("IconLabel")
 			if text then text.TextSize=prefs.fontSize end
 		end
@@ -313,6 +325,7 @@ function XP.mount(gui,onExit)
 		{"Мои документы","308(32x32).png",function() self.apps:explorer("documents") end},
 		{"Сетевое окружение","309(32x32).png",function() self.apps:explorer("network") end},
 		{"Корзина","Recycle Bin (empty).png",function() self.apps:explorer("recycle") end},
+		{"Games","folder.png",function() self.apps:games() end},
 	}
 	for index,item in desktopItems do
 		local button=T.flatButton(icons,"",8,12+(index-1)*91,90,82)
@@ -369,9 +382,11 @@ function XP.mount(gui,onExit)
 		uiScale.Scale=scale
 		canvas.Size=UDim2.fromOffset(width/scale,height/scale)
 		desktop:SetAttribute("UIScale",scale)
+		self:layoutIcons()
 	end
 	self.resizeCanvas=resizeCanvas
 	track(physical:GetPropertyChangedSignal("AbsoluteSize"):Connect(resizeCanvas))
+	track(GuiService:GetPropertyChangedSignal("TopbarInset"):Connect(function() self:layoutIcons() end))
 	track(UIS.InputBegan:Connect(function(input,processed)
 		self.lastInput=os.clock()
 		if self.screen then self.screen:Destroy() self.screen=nil return end
@@ -391,7 +406,7 @@ function XP.mount(gui,onExit)
 			pointer.Position=UDim2.fromOffset(x,y)
 			pointerShadow.Position=UDim2.fromOffset(x+1,y+1)
 			if State.current and State.current.preferences.mouseTrails then
-				local trail=T.image(physical,"arrow.png",x,y,32,32,"cursors/")
+				local trail=T.image(physical,"arrow-rgba.png",x,y,32,32,"cursors/")
 				trail.ZIndex=4999 trail.ImageTransparency=0.65
 				table.insert(pointerHistory,trail)
 				if #pointerHistory>6 then table.remove(pointerHistory,1):Destroy() end

@@ -216,10 +216,10 @@ function Apps:explorer(location)
 end
 
 function Apps:games()
-	local window,fresh=self.context.wm:create("games","Игры","folder.png",600,400)
+	local window,fresh=self.context.wm:create("games","Games","folder.png",600,400)
 	if not fresh then return window end
 	window.body.BackgroundColor3=Color3.new(1,1,1)
-	T.text(window.body,"Игры",22,20,540,40,22,Color3.fromRGB(0,51,153),true)
+	T.text(window.body,"Games",22,20,540,40,22,Color3.fromRGB(0,51,153),true)
 	if #Games==0 then
 		T.text(window.body,"В этой папке пока нет установленных игр.",22,95,540,50,12)
 	else

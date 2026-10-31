@@ -87,7 +87,9 @@ for _,name in {"Theme","State","WindowManager","Settings","Apps"} do nodes[name]
 local world=instance("Workspace") world.CurrentCamera=instance("Camera")
 local input=instance("UserInputService") input.IsKeyDown=function() return false end input.GetMouseLocation=function() return {X=0,Y=0} end
 local runService=instance("RunService")
-local services={Players=players,ReplicatedStorage=storage,GuiService={},UserInputService=input,RunService=runService,
+local guiService=instance("GuiService")
+guiService.TopbarInset={Max={X=1200,Y=64}}
+local services={Players=players,ReplicatedStorage=storage,GuiService=guiService,UserInputService=input,RunService=runService,
 	SoundService=instance("SoundService"),Debris={AddItem=function() end},StarterGui={SetCoreGuiEnabled=function() end},
 	TweenService={Create=function() return {Play=function() end} end}}
 local results={}
@@ -137,6 +139,20 @@ cards:WaitForChild("windows-xp").Activated:Fire()
 assert(session and session.welcomeFrame and not root.Visible,"XP welcome replaces launcher")
 session.welcomeFrame.Center.Profiles:WaitForChild("Profile:"..owner.id).Activated:Fire()
 assert(State.current==owner and session.desktop.Visible and not session.welcomeFrame,"Profile login")
+local recycle=session.icons:WaitForChild("Desktop:Корзина")
+local gamesFolder=session.icons:WaitForChild("Desktop:Games")
+assert(recycle.Position.Y.Offset>=80,"Recycle Bin must be below Roblox controls")
+assert(gamesFolder.Position.Y.Offset>recycle.Position.Y.Offset,"Games folder must have a separate icon position")
+guiService.TopbarInset={Max={X=1200,Y=104}}
+assert(recycle.Position.Y.Offset>=120,"Icon placement must follow a taller Roblox topbar")
+session.desktop:SetAttribute("UIScale",0.5) session:layoutIcons()
+assert(recycle.Position.Y.Offset*0.5>=120,"Topbar safety must use physical pixels after UI scaling")
+session.desktop:SetAttribute("UIScale",1) session:layoutIcons()
+gamesFolder.Activated:Fire() gamesFolder.Activated:Fire()
+assert(session.wm.windows.games and session.wm.windows.games.titleText.Text=="Games","Desktop Games folder opens")
+assert(#results.Games==0,"Games folder remains empty")
+session.wm.windows.games.close()
+print("PASS: desktop icon safe area, topbar changes, UI scaling, empty Games folder double-click")
 session:startMenu() assert(session.menu,"Start menu") session:closeMenus()
 local settingsCount=0
 for _,method in {"display","desktopIcons","taskbar","sound","mouse","regional","datetime"} do
