@@ -25,5 +25,6 @@ Build a modular Roblox Studio project with selectable operating-system and conso
 8. Do not store credentials, personal data, or invented claims of persistent model learning. Documentation is project memory for future sessions.
 9. Keep implementation simple; split platform-specific behavior into modules when it is actually introduced. Do not create empty systems or speculative abstractions.
 10. The owner works on this computer during development. Run builds and logic checks in the background. Do not activate Studio, switch desktops, or use the shared mouse/keyboard while the owner is working; arrange an isolated environment or an agreed time for visual checks.
+11. The owner requested a permanent build folder: `D:\Omni-Shell`. Use `scripts/build.ps1` for releases: it updates `D:\Omni-Shell\OmniShell.rbxlx` and keeps timestamped copies in `D:\Omni-Shell\builds`. Keep the stable filename and preserve old builds. Source code remains in this Git repository.
 
 The owner's task instructions take precedence over these repository conventions.
